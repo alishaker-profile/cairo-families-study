@@ -1,0 +1,41 @@
+// End-to-end check of the live study: fills all 12 questions in a real browser and waits for the thank-you screen.
+// Usage: node live-test.js [url]   (answers are tagged src=claude-test)
+const { chromium } = require('playwright');
+const URL = process.argv[2] || 'https://cairo-families-study.web.app/?src=claude-test';
+(async () => {
+  const t0 = Date.now();
+  const b = await chromium.launch();
+  const p = await b.newPage({ viewport: { width: 390, height: 844 }, locale: 'ar-EG' });
+  const fails = [];
+  p.on('requestfailed', r => fails.push(r.url().slice(0, 70) + ' ' + ((r.failure() || {}).errorText || '')));
+  await p.goto(URL, { waitUntil: 'load' });
+  const ep = await p.evaluate(() => (document.documentElement.innerHTML.match(/const ENDPOINT = "([^"]+)"/) || [])[1] || 'none');
+  console.log('PAGE OK | endpoint ...' + ep.slice(-24));
+  const pick = sel => p.click(sel);
+  const wait = ms => p.waitForTimeout(ms);
+  await pick("[data-start='ar']"); await wait(500);
+  await pick("#opts [data-code='ib']"); await wait(800);
+  await pick("#opts [data-code='secondary']"); await wait(800);
+  for (const c of ['reputation', 'teachers', 'academics']) await pick(`#opts [data-code='${c}']`);
+  await pick('#next'); await wait(500);
+  for (const c of ['teachers', 'future_skills', 'wellbeing']) await pick(`#opts [data-code='${c}']`);
+  await pick('#next'); await wait(500);
+  await pick("#opts [data-code='parents_friends']"); await wait(800);
+  await pick("#opts [data-code='4']"); await pick('#next'); await wait(500);
+  await pick("#opts [data-code='careful']"); await wait(800);
+  await pick("#opts [data-code='privacy']"); await pick('#next'); await wait(500);
+  await pick("#opts [data-code='a_lot']"); await wait(800);
+  await pick("#opts [data-code='only_in_fees']"); await wait(800);
+  await pick("#opts [data-code='attend']"); await pick('#next'); await wait(500);
+  await p.fill('#q12-input', 'TEST - Claude live check ' + new Date().toISOString().slice(11, 19));
+  const s0 = Date.now();
+  await pick('#next');
+  await p.waitForSelector('#done:not([hidden])', { timeout: 30000 });
+  console.log('SUBMIT OK | thank-you screen after ' + ((Date.now() - s0) / 1000).toFixed(1) + 's');
+  const wa = decodeURIComponent(await p.getAttribute('#wa', 'href') || '');
+  console.log('WHATSAPP LINK OK: ' + /wa\.me\/\?text=[\s\S]+cairo-families-study\.web\.app\/\?src=share/.test(wa));
+  await wait(2500);
+  console.log('FAILED REQUESTS: ' + (fails.length ? fails.join(' | ') : 'none'));
+  await b.close();
+  console.log('DONE in ' + ((Date.now() - t0) / 1000).toFixed(1) + 's');
+})().catch(e => { console.error('FAIL: ' + e.message); process.exit(1); });
