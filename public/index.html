@@ -1,0 +1,940 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="A 3-minute anonymous study on how Cairo families choose schools. دراسة مجهولة الهوية في 3 دقائق عن كيف تختار أسر القاهرة المدارس.">
+<meta property="og:title" content="كيف تختار أسر القاهرة المدرسة؟ | How do Cairo families choose a school?">
+<meta property="og:description" content="3 دقائق · دون أسماء · 3 minutes, anonymous">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://cairo-families-study.web.app/">
+<meta property="og:image" content="https://cairo-families-study.web.app/share-card.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cairo-families-study.web.app/share-card.jpg">
+<link rel="canonical" href="https://cairo-families-study.web.app/">
+<meta name="theme-color" content="#0B1424">
+<title>Cairo Families Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
+<style>
+/* Layout: a bilingual magazine cover (EN | AR) over a night sky of rising "launch" arcs, then one question per screen; one committed night palette, amber marks every choice */
+:root{
+  color-scheme: dark;
+  --night:#0B1424;
+  --deep:#111D33;
+  --card:rgba(19,32,56,.78);
+  --line:rgba(214,224,245,.13);
+  --line-strong:rgba(214,224,245,.28);
+  --text:#F4F1EA;
+  --muted:#9BA7BD;
+  --sun:#FFB547;
+  --sun-soft:rgba(255,181,71,.13);
+  --sun-ink:#1B1205;
+  --sky:#9CCFFF;
+  --err:#FF9A8B;
+  --display:"Alexandria","IBM Plex Sans Arabic",system-ui,sans-serif;
+  --body:"IBM Plex Sans Arabic","Alexandria",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  background:var(--night);
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{min-height:100%}
+body{margin:0;background:var(--night);color:var(--text);font:400 16px/1.55 var(--body);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+[hidden]{display:none!important}
+img,svg{max-width:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--night)}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(110% 55% at 8% 108%, rgba(255,181,71,.17), transparent 62%),
+    radial-gradient(70% 45% at 100% -8%, rgba(156,207,255,.10), transparent 60%)}
+#sky{position:fixed;inset:0;width:100%;height:100%;z-index:0;transition:opacity .7s ease;pointer-events:none}
+body.is-quiz #sky{opacity:.22}
+#app{position:relative;z-index:1}
+.wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.screen{min-height:100vh;min-height:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))}
+:focus-visible{outline:3px solid var(--sky);outline-offset:3px}
+
+/* icons */
+.ico{flex:none;display:block}
+[dir="rtl"] .arrow{transform:scaleX(-1)}
+.arrow.back{transform:scaleX(-1)}
+[dir="rtl"] .arrow.back{transform:none}
+
+/* buttons */
+.cta{appearance:none;border:0;border-radius:999px;background:var(--sun);color:var(--sun-ink);
+  font:600 17px/1 var(--display);padding:0 26px;min-height:56px;display:inline-flex;gap:12px;align-items:center;justify-content:center;
+  cursor:pointer;box-shadow:0 12px 32px -12px rgba(255,181,71,.6);transition:transform .15s ease, box-shadow .15s ease, opacity .15s ease}
+.cta:hover{transform:translateY(-1px);box-shadow:0 16px 36px -12px rgba(255,181,71,.7)}
+.cta:active{transform:translateY(0)}
+.cta:disabled{opacity:.36;cursor:not-allowed;box-shadow:none;transform:none}
+.ghost{appearance:none;background:none;border:1px solid transparent;color:var(--muted);font:500 15px/1 var(--body);
+  padding:0 12px;min-height:44px;border-radius:12px;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.ghost:hover{color:var(--text);border-color:var(--line)}
+.btn2{appearance:none;border:1px solid var(--line-strong);background:rgba(19,32,56,.6);color:var(--text);border-radius:999px;
+  padding:0 20px;min-height:52px;font:600 15.5px/1 var(--display);display:inline-flex;align-items:center;gap:10px;cursor:pointer;text-decoration:none;transition:border-color .15s ease, background .15s ease}
+.btn2:hover{border-color:var(--sun)}
+.btn2[aria-disabled="true"]{opacity:.45;pointer-events:none}
+
+/* wordmark */
+.sign{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:13px}
+.wordmark{display:inline-flex;align-items:center;gap:9px;font:700 16px/1 var(--display);color:var(--text);letter-spacing:-.01em}
+.small-mono{font:500 11.5px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+
+/* ---------- cover ---------- */
+.cover{display:flex}
+.cover-inner{width:100%;max-width:1080px;margin:0 auto;display:flex;flex-direction:column;justify-content:space-between;gap:clamp(34px,6.5vh,72px);padding-block:22px 28px}
+.mast{display:flex;justify-content:space-between;align-items:center;gap:10px 16px;flex-wrap:wrap}
+.mast .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--sun);margin-inline-end:10px;box-shadow:0 0 0 4px rgba(255,181,71,.18);vertical-align:1px}
+.titles{display:grid;grid-template-columns:1fr 1fr}
+.col{min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:20px}
+.col.en{padding-right:clamp(24px,4.5vw,64px)}
+.col.ar{padding-left:clamp(24px,4.5vw,64px);border-left:1px solid var(--line)}
+.col h1{margin:0;font:800 clamp(36px,6vw,68px)/1.03 var(--display);letter-spacing:-.028em;text-wrap:balance}
+.col.ar h1{font-size:clamp(34px,5.4vw,62px);line-height:1.3;letter-spacing:0}
+.col h1 em{font-style:normal;color:var(--sun)}
+.lede{margin:0;color:var(--muted);font-size:17px;max-width:46ch}
+.col.ar .lede{font-size:18px;line-height:1.75}
+.facts{display:flex;flex-wrap:wrap;gap:8px}
+.fact{font:500 12.5px/1 var(--mono);letter-spacing:.04em;color:var(--text);border:1px solid var(--line-strong);border-radius:999px;padding:9px 12px;background:rgba(11,20,36,.45)}
+.col.ar .fact{font:500 14px/1 var(--body);letter-spacing:0}
+.resume-row{display:flex;justify-content:center}
+.resume-row .ghost{color:var(--sky);border-color:rgba(156,207,255,.35)}
+.about{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,4.5vw,64px);border-top:1px solid var(--line);padding-top:20px;color:var(--muted);font-size:13.5px;line-height:1.65}
+.about p{margin:0}
+.about [lang="ar"]{font-size:14.5px;line-height:1.85}
+.cover-foot{display:flex;flex-direction:column;gap:18px}
+@media (max-width:760px){
+  .titles{grid-template-columns:1fr;gap:30px}
+  .col.en{padding-right:0}
+  .col.ar{padding-left:0;border-left:0;border-top:1px solid var(--line);padding-top:30px}
+  body.ar-first .col.ar{order:-1;border-top:0;padding-top:0}
+  body.ar-first .col.en{border-top:1px solid var(--line);padding-top:30px}
+  .about{grid-template-columns:1fr;gap:14px}
+  body.ar-first .about [lang="ar"]{order:-1}
+  .col .cta{width:100%}
+}
+
+/* ---------- quiz ---------- */
+.qbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;padding-block:10px 12px;
+  background:linear-gradient(var(--night) 72%, rgba(11,20,36,0))}
+.qbar-in{max-width:640px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.count{font:500 13px/1 var(--mono);letter-spacing:.1em;color:var(--muted);font-variant-numeric:tabular-nums}
+.count b{color:var(--text);font-weight:500}
+.track{max-width:640px;margin:6px auto 0;height:3px;border-radius:3px;background:var(--line);overflow:hidden;display:flex}
+.track span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--sun),#FFD58F);border-radius:3px;transition:width .45s cubic-bezier(.2,.7,.2,1)}
+.qwrap{padding-block:clamp(20px,4.5vh,44px) 160px}
+.qinner{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+.section-label{margin:0;font:500 12px/1.3 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--sun)}
+[dir="rtl"] .section-label{font:600 14px/1.3 var(--body);letter-spacing:0}
+.qtitle{margin:2px 0 0;font:600 clamp(23px,5.4vw,32px)/1.28 var(--display);letter-spacing:-.012em;text-wrap:balance;outline:none}
+[dir="rtl"] .qtitle{line-height:1.55;letter-spacing:0}
+.hint{margin:0;color:var(--muted);font-size:15px}
+.opts{display:grid;gap:10px;margin-top:14px}
+.opt{appearance:none;width:100%;text-align:start;display:flex;align-items:center;gap:14px;padding:14px 16px;min-height:58px;
+  border-radius:16px;border:1px solid var(--line);background:var(--card);color:var(--text);font:500 16.5px/1.4 var(--body);cursor:pointer;
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);transition:border-color .15s ease, background .15s ease, transform .12s ease}
+[dir="rtl"] .opt{font-size:17px;line-height:1.6}
+.opt:hover{border-color:var(--line-strong)}
+.opt:active{transform:scale(.99)}
+.opt .label{flex:1;min-width:0}
+.mark{flex:none;width:24px;height:24px;border-radius:50%;border:1.5px solid var(--line-strong);display:grid;place-items:center;transition:background .15s ease,border-color .15s ease}
+.opts.multi .mark{border-radius:7px}
+.mark svg{opacity:0;color:var(--sun-ink);transition:opacity .12s ease}
+.opt.on{border-color:var(--sun);background:var(--sun-soft)}
+.opt.on .mark{background:var(--sun);border-color:var(--sun)}
+.opt.on .mark svg{opacity:1}
+.scale{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:14px}
+.sbtn{appearance:none;aspect-ratio:1/1;max-width:100%;border-radius:16px;border:1px solid var(--line);background:var(--card);color:var(--text);
+  font:700 clamp(20px,5vw,26px)/1 var(--display);cursor:pointer;transition:border-color .15s ease, background .15s ease;font-variant-numeric:tabular-nums}
+.sbtn:hover{border-color:var(--line-strong)}
+.sbtn.on{background:var(--sun);border-color:var(--sun);color:var(--sun-ink)}
+.scale-ends{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:14px;margin-top:2px}
+.dk{margin-top:10px;justify-self:start}
+.dk.on{border-color:var(--sun);background:var(--sun-soft);color:var(--text)}
+.txt{width:100%;min-height:132px;resize:vertical;margin-top:14px;border-radius:16px;border:1px solid var(--line-strong);background:var(--card);color:var(--text);
+  font:400 17px/1.6 var(--body);padding:14px 16px}
+.txt::placeholder{color:var(--muted);opacity:.85}
+.txt:focus{border-color:var(--sun);outline:none;box-shadow:0 0 0 3px rgba(255,181,71,.22)}
+.actbar{position:fixed;left:0;right:0;bottom:0;z-index:6;
+  padding-top:22px;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  background:linear-gradient(rgba(11,20,36,0), var(--night) 42%)}
+.act-in{max-width:640px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.status{font-size:14px;color:var(--muted);min-width:0;flex:1}
+.status.warn{color:var(--sun)}
+.status.err{color:var(--err)}
+#next{min-width:152px;flex:none}
+.enter{animation:rise .4s cubic-bezier(.2,.7,.2,1)}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.nudge{animation:nudge .32s ease}
+@keyframes nudge{0%,100%{transform:none}30%{transform:translateX(-4px)}60%{transform:translateX(4px)}}
+
+/* ---------- end screens ---------- */
+.end{display:flex;align-items:center}
+.end-in{width:100%;max-width:640px;margin:0 auto;padding-block:48px;display:flex;flex-direction:column;gap:22px}
+.end h2{margin:0;font:800 clamp(46px,10vw,88px)/1 var(--display);letter-spacing:-.035em}
+[dir="rtl"] .end h2{letter-spacing:0;line-height:1.25}
+.end .body{margin:0;color:var(--muted);font-size:18px;line-height:1.65;max-width:50ch}
+.share-line{margin:4px 0 -4px;font:600 18px/1.55 var(--display);color:var(--text);max-width:40ch;text-wrap:balance}
+[dir="rtl"] .share-line{font-size:19px;line-height:1.75}
+.share{display:grid;grid-template-columns:1fr;gap:10px}
+.share .cta{width:100%;text-decoration:none}
+.share .btn2{justify-content:center;width:100%}
+.cta[aria-disabled="true"]{opacity:.45;pointer-events:none;box-shadow:none}
+@media (max-width:640px){
+  .opts.compact-list{gap:7px}
+  .opts.compact-list .opt{padding:11px 14px;min-height:48px;font-size:15.5px}
+}
+.copyfield{width:100%;border-radius:12px;border:1px solid var(--line-strong);background:var(--card);color:var(--text);font:400 15px/1.4 var(--mono);padding:12px 14px}
+.badge{margin:0;display:inline-flex;gap:8px;align-items:center;border:1px dashed rgba(156,207,255,.5);color:var(--sky);border-radius:12px;padding:10px 14px;font-size:13.5px;align-self:flex-start}
+.end .sign{border-top:1px solid var(--line);padding-top:18px;margin-top:10px}
+
+@media (prefers-reduced-motion: reduce){
+  .enter,.nudge{animation:none}
+  *{transition:none!important}
+}
+</style>
+</head>
+<body>
+<canvas id="sky" aria-hidden="true"></canvas>
+
+<main id="app">
+
+  <!-- Cover -->
+  <section id="cover" class="screen cover wrap" dir="ltr">
+    <div class="cover-inner">
+      <div class="mast">
+        <span class="small-mono"><span class="dot"></span>The Cairo Families Study · 2026</span>
+        <span class="small-mono">Questionnaire v1</span>
+      </div>
+
+      <div class="titles">
+        <div class="col en" lang="en" dir="ltr">
+          <h1>How do Cairo families <em>choose</em> a&nbsp;school?</h1>
+          <p class="lede">Help us understand what parents look for in a school, and what they expect schools to teach next.</p>
+          <div class="facts"><span class="fact">12 questions</span><span class="fact">≈ 3 minutes</span><span class="fact">Anonymous</span></div>
+          <button class="cta" type="button" data-start="en"><span>Start in English</span><svg class="ico arrow" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 12h15M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+        <div class="col ar" lang="ar" dir="rtl">
+          <h1>كيف <em>تختار</em> أسر القاهرة المدرسة؟</h1>
+          <p class="lede">ساعدنا على فهم ما يبحث عنه أولياء الأمور في المدرسة، وما ينتظرونه منها في السنوات القادمة.</p>
+          <div class="facts"><span class="fact">12 سؤالاً</span><span class="fact">نحو 3 دقائق</span><span class="fact">دون ذكر اسمك</span></div>
+          <button class="cta" type="button" data-start="ar"><span>ابدأ بالعربية</span><svg class="ico arrow" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 12h15M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </div>
+
+      <div class="cover-foot">
+        <div class="resume-row" id="resumeRow" hidden><button class="ghost" id="resumeBtn" type="button"></button></div>
+        <div class="about">
+          <p lang="en">Run by Launchyard, an education startup in Cairo. We don't ask for your name, phone, email or school, and we report results only as totals. If you have more than one child, answer for the one in the highest grade. Questions? Reply to whoever shared this link with you.</p>
+          <p lang="ar" dir="rtl">تُجري هذه الدراسة Launchyard، وهي شركة ناشئة في مجال التعليم بالقاهرة. لا نطلب اسمك أو هاتفك أو بريدك الإلكتروني أو اسم المدرسة، ونعرض النتائج كإجماليات فقط. إن كان لديك أكثر من طفل، أجب عن الطفل في أعلى صف دراسي. لأي استفسار، راسل من أرسل لك هذا الرابط.</p>
+        </div>
+        <div class="sign">
+          <span class="wordmark"><svg viewBox="0 0 28 28" width="22" height="22" aria-hidden="true"><path d="M3 25C9 24 17 18 21.5 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="22.5" cy="5" r="3" fill="#FFB547"/></svg>Launchyard</span>
+          <span class="small-mono">Cairo · 2026</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Questions -->
+  <section id="quiz" class="screen" hidden>
+    <header class="qbar wrap">
+      <div class="qbar-in">
+        <button class="ghost" id="back" type="button"><svg class="ico arrow back" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 12h15M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="lbl">Back</span></button>
+        <span class="count" id="count" dir="ltr"></span>
+        <button class="ghost" id="langSwitch" type="button"></button>
+      </div>
+      <div class="track" aria-hidden="true"><span id="fill"></span></div>
+    </header>
+    <div class="qwrap wrap">
+      <div class="qinner" id="qinner">
+        <p class="section-label" id="sec"></p>
+        <h2 class="qtitle" id="qt" tabindex="-1"></h2>
+        <p class="hint" id="qh"></p>
+        <div id="opts"></div>
+      </div>
+    </div>
+    <div class="actbar">
+      <div class="act-in">
+        <span class="status" id="status" aria-live="polite"></span>
+        <button class="cta" id="next" type="button"><span class="lbl">Next</span><svg class="ico arrow" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 12h15M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Thank you -->
+  <section id="done" class="screen end wrap" hidden>
+    <div class="end-in">
+      <p class="section-label" id="doneLabel"></p>
+      <h2 id="doneTitle"></h2>
+      <p class="body" id="doneText"></p>
+      <p class="share-line" id="shareLine"></p>
+      <div class="share">
+        <a class="cta" id="wa" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M20 11.5a8 8 0 0 1-11.6 7.1L4 20l1.4-4.2A8 8 0 1 1 20 11.5Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><span class="lbl"></span></a>
+        <button class="btn2" id="copy" type="button"><svg class="ico" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M15.5 8.5V6.5A2 2 0 0 0 13.5 4.5H6.5A2 2 0 0 0 4.5 6.5V13.5A2 2 0 0 0 6.5 15.5H8.5" fill="none" stroke="currentColor" stroke-width="1.9"/></svg><span class="lbl"></span></button>
+      </div>
+      <input id="copyField" class="copyfield" readonly hidden aria-label="Study link">
+      <div class="sign">
+        <span class="wordmark"><svg viewBox="0 0 28 28" width="22" height="22" aria-hidden="true"><path d="M3 25C9 24 17 18 21.5 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="22.5" cy="5" r="3" fill="#FFB547"/></svg>Launchyard</span>
+        <span class="small-mono">Cairo · 2026</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Screened out -->
+  <section id="out" class="screen end wrap" hidden>
+    <div class="end-in">
+      <h2 id="outTitle"></h2>
+      <p class="body" id="outText"></p>
+      <div><button class="btn2" id="outBack" type="button"></button></div>
+    </div>
+  </section>
+</main>
+
+<script>
+(() => {
+  "use strict";
+
+  // Google Apps Script web app URL (ends with /exec). Answers land in the "Cairo Families Study · Responses" sheet.
+  // Public address of the live study; used for sharing when the page runs anywhere else (e.g. a preview)
+  const CANONICAL = "https://cairo-families-study.web.app/";
+  const ENDPOINT = "https://script.google.com/macros/s/AKfycbwOTAdJvdnbVJFoFMV-fuS82Bj15CtFWwVAgaYDA1gxM_W3Tm3J8sn6nTo2mdvjJ8O49Q/exec";
+  const K_DRAFT = "cfs26-draft";
+  const K_DONE = "cfs26-done";
+  const store = {
+    get(k){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch (e) { return null; } },
+    set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} },
+    del(k){ try { localStorage.removeItem(k); } catch (e) {} }
+  };
+  const newId = () => {
+    try { if (window.crypto && crypto.randomUUID) return crypto.randomUUID(); } catch (e) {}
+    return Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 10) + Math.random().toString(36).slice(2, 10);
+  };
+  // One id per browser, so repeat answers from the same device are flagged in the sheet
+  const DEVICE_ID = (() => { let d = store.get("cfs26-did"); if (!d) { d = newId(); store.set("cfs26-did", d); } return d; })();
+
+  // Inside Claude (or opened as a local file) nothing is sent; on the live link answers go to the Google Sheet.
+  const PREVIEW = (() => {
+    let framed = false;
+    try { framed = window.self !== window.top; } catch (e) { framed = true; }
+    const h = location.hostname || "";
+    if (/\.github\.io$|\.web\.app$|\.firebaseapp\.com$|\.netlify\.app$/.test(h)) return false;
+    return framed || location.protocol === "file:" || h === "" ||
+      /(^|\.)claude\.ai$|claudeusercontent\.com$|anthropic\.com$|^localhost$|^127\./.test(h);
+  })();
+
+  // Channel tag from the link, e.g. ?src=wa-parents-group
+  let SRC = "direct";
+  try {
+    const p = new URLSearchParams(location.search).get("src");
+    if (p && /^[a-z0-9_-]{1,40}$/i.test(p)) SRC = p.toLowerCase();
+  } catch (e) {}
+
+  const L = (en, ar) => ({ en, ar });
+
+  const SECTIONS = [
+    L("About your child", "عن طفلك"),
+    L("Choosing a school", "اختيار المدرسة"),
+    L("Technology and AI", "التكنولوجيا والذكاء الاصطناعي"),
+    L("What matters next", "ما الذي يهمّ بعد ذلك"),
+    L("In your words", "بكلماتك")
+  ];
+
+  const FACTORS = [
+    ["academics",     L("Academic results and university placement", "النتائج الأكاديمية والقبول الجامعي")],
+    ["curriculum",    L("Curriculum and accreditation", "المنهج والاعتماد الدولي")],
+    ["reputation",    L("The school's reputation", "سمعة المدرسة")],
+    ["teachers",      L("Quality of teachers", "جودة المعلمين")],
+    ["fees",          L("Fees and value for money", "الرسوم ومقابلها")],
+    ["location",      L("Location and commute", "الموقع والمواصلات")],
+    ["facilities",    L("Facilities and campus", "المرافق والحرم المدرسي")],
+    ["future_skills", L("Future skills, technology and AI", "مهارات المستقبل والتكنولوجيا والذكاء الاصطناعي")],
+    ["activities",    L("Activities, sports and arts", "الأنشطة والرياضة والفنون")],
+    ["wellbeing",     L("Safety, wellbeing and values", "الأمان والرعاية والقيم")],
+    ["community",     L("The school community and other families", "مجتمع المدرسة والأسر الأخرى")]
+  ];
+
+  const QS = [
+    { id: "q1_curriculum", sec: 0, type: "single", screen: "national",
+      t: L("Which curriculum is your child on?", "ما المنهج الذي يدرسه طفلك؟"),
+      hint: L("If you have more than one child, answer for the one in the highest grade.", "إن كان لديك أكثر من طفل، أجب عن الطفل في أعلى صف دراسي."),
+      opts: [
+        ["british",    L("British (IGCSE / A-Level)", "بريطاني (IGCSE / A-Level)")],
+        ["american",   L("American (American Diploma)", "أمريكي (American Diploma)")],
+        ["ib",         L("IB (International Baccalaureate)", "البكالوريا الدولية (IB)")],
+        ["other_intl", L("Another international curriculum (German, French, Canadian…)", "منهج دولي آخر (ألماني، فرنسي، كندي...)")],
+        ["national",   L("Egyptian national / language curriculum", "المنهج المصري (حكومي / قومي / لغات)")]
+      ] },
+    { id: "q2_stage", sec: 0, type: "single",
+      t: L("Which stage is your child in?", "في أي مرحلة دراسية طفلك؟"),
+      opts: [
+        ["kg",        L("KG", "رياض الأطفال")],
+        ["primary",   L("Primary", "المرحلة الابتدائية")],
+        ["middle",    L("Middle school", "المرحلة الإعدادية")],
+        ["secondary", L("Secondary", "المرحلة الثانوية")]
+      ] },
+    { id: "q3_chose", sec: 1, type: "multi", exact: 3, shuffle: true,
+      t: L("When you chose your child's current school, which 3 factors mattered most?", "عند اختيارك مدرسة طفلك الحالية، ما أهم 3 عوامل حسمت قرارك؟"),
+      hint: L("Pick exactly 3.", "اختر 3 بالضبط."),
+      opts: FACTORS },
+    { id: "q4_today", sec: 1, type: "multi", exact: 3, shuffle: true,
+      t: L("If you were choosing a school today, which 3 would matter most?", "لو كنت تختار مدرسة اليوم، ما أهم 3 عوامل؟"),
+      hint: L("Same list. Pick exactly 3.", "القائمة نفسها. اختر 3 بالضبط."),
+      opts: FACTORS },
+    { id: "q5_source", sec: 1, type: "single",
+      t: L("How did you first hear about your current school?", "كيف سمعت عن مدرستك الحالية أول مرة؟"),
+      opts: [
+        ["parents_friends", L("Other parents, friends or family", "أولياء أمور أو أصدقاء أو أقارب")],
+        ["social_media",    L("Social media", "وسائل التواصل الاجتماعي")],
+        ["website_search",  L("School website or online search", "موقع المدرسة أو البحث على الإنترنت")],
+        ["open_day",        L("Open day or school event", "يوم مفتوح أو فعالية للمدرسة")],
+        ["sibling",         L("An older sibling already there", "أخ أو أخت أكبر في المدرسة")],
+        ["rankings_press",  L("Rankings, press or education fairs", "تصنيفات أو صحافة أو معارض تعليمية")],
+        ["other",           L("Other", "أخرى")]
+      ] },
+    { id: "q6_rating", sec: 2, type: "scale",
+      t: L("How well does your child's school prepare them for the technology and AI skills they will need?", "إلى أي مدى تُعِدّ مدرسة طفلك لمهارات التكنولوجيا والذكاء الاصطناعي التي سيحتاجها؟") },
+    { id: "q7_view", sec: 2, type: "single",
+      t: L("Which statement is closest to your view on AI in your child's education?", "أي عبارة هي الأقرب لرأيك في الذكاء الاصطناعي في تعليم طفلك؟"),
+      opts: [
+        ["must_learn", L("A skill my child must learn now, with guidance", "مهارة يجب أن يتعلمها طفلي الآن، مع توجيه")],
+        ["careful",    L("Useful, but schools should move carefully", "مفيد، لكن على المدارس أن تتقدّم بحذر")],
+        ["more_risk",  L("More risk than benefit for children", "ضرره على الأطفال أكبر من نفعه")],
+        ["not_sure",   L("I'm not sure yet", "لم أكوّن رأياً بعد")]
+      ] },
+    { id: "q8_worries", sec: 2, type: "multi", max: 2, exclusive: ["nothing"],
+      t: L("What worries you most about children using AI?", "ما أكثر ما يقلقك من استخدام الأطفال للذكاء الاصطناعي؟"),
+      hint: L("Pick up to 2.", "اختر حتى اثنين."),
+      opts: [
+        ["less_thinking", L("Less effort and independent thinking", "تراجع الجهد والتفكير المستقل")],
+        ["cheating",      L("Cheating on schoolwork", "الغش في الواجبات والاختبارات")],
+        ["screen_time",   L("More screen time", "زيادة الوقت أمام الشاشات")],
+        ["privacy",       L("Privacy of my child's data and images", "خصوصية بيانات طفلي وصوره")],
+        ["bad_content",   L("Wrong or unsuitable content", "محتوى خاطئ أو غير مناسب")],
+        ["nothing",       L("Nothing worries me", "لا شيء يقلقني")]
+      ] },
+    { id: "q9_influence", sec: 3, type: "single",
+      t: L("How much would a school's strength in future skills affect your decision to keep your child there or move them?", "إلى أي مدى تؤثّر قوة المدرسة في مهارات المستقبل على قرارك بإبقاء طفلك فيها أو نقله؟"),
+      opts: [
+        ["not_at_all",   L("Not at all", "لا تؤثر")],
+        ["a_little",     L("A little", "تؤثر قليلاً")],
+        ["a_lot",        L("A lot", "تؤثر كثيراً")],
+        ["could_decide", L("It could decide it", "قد تحسم القرار")]
+      ] },
+    { id: "q10_pay", sec: 3, type: "single",
+      hint: L("If your child is in KG, answer for when they reach Primary stage.", "إن كان طفلك في رياض الأطفال، أجب عما ستفعله عند وصوله للمرحلة الابتدائية."),
+      hintIf: a => a.q2_stage === "kg",
+      t: L("Would you pay for an optional, term-long program where your child builds a real project with AI tools, guided by mentors?", "هل تدفع مقابل برنامج اختياري لمدة فصل دراسي، يبني فيه طفلك مشروعاً حقيقياً بأدوات الذكاء الاصطناعي بإشراف موجّهين؟"),
+      opts: [
+        ["no",            L("No", "لا")],
+        ["only_in_fees",  L("Only if it's included in school fees", "فقط إن كان ضمن الرسوم المدرسية")],
+        ["like_activity", L("Yes, if it costs about what a term of an after-school activity costs (sports, music, languages)", "نعم، إن كانت تكلفته قريبة من فصل دراسي لنشاط بعد المدرسة (رياضة، موسيقى، لغات)")],
+        ["more_if_proven",L("Yes, even more than that, if the results are proven", "نعم، حتى لو كانت أعلى من ذلك، إن كانت النتائج مثبتة")]
+      ] },
+    { id: "q11_showcase", sec: 3, type: "multi", exclusive: ["none"],
+      t: L("If your child presented a project they built to judges from real companies, what would you do?", "لو قدّم طفلك مشروعاً بناه أمام لجنة تحكيم من شركات حقيقية، ماذا ستفعل؟"),
+      hint: L("Pick all that apply.", "اختر كل ما ينطبق."),
+      opts: [
+        ["attend",       L("Attend in person", "أحضر بنفسي")],
+        ["share_social", L("Share it on my social media", "أنشره على حساباتي")],
+        ["send_family",  L("Send it to family and other parents", "أرسله للعائلة ولأولياء أمور آخرين")],
+        ["mention_rec",  L("Mention it when I recommend the school", "أذكره عندما أرشّح المدرسة لأحد")],
+        ["none",         L("None of these", "لا شيء مما سبق")]
+      ] },
+    { id: "q12_skill", sec: 4, type: "text",
+      t: L("In one sentence: what is one skill you wish your child's school taught better?", "في جملة واحدة: ما المهارة التي تتمنى أن تعلّمها مدرسة طفلك بشكل أفضل؟"),
+      hint: L("Optional.", "اختياري.") }
+  ];
+
+  const UI = {
+    en: {
+      back: "Back", next: "Next", send: "Send my answers", skipSend: "Skip and send", sending: "Sending…", retry: "Try again",
+      switchTo: "العربية",
+      selExact: (n, m) => `${n} of ${m} selected`,
+      pickUpTo: m => `Pick up to ${m}`,
+      selUpTo: (n, m) => `${n} of up to ${m} selected`,
+      pickAny: "Pick all that apply",
+      selAny: n => `${n} selected`,
+      full3: "You've picked 3. Tap one to remove it first.",
+      screenWarn: "Egyptian national curriculum selected — tap Next to confirm.",
+      full2: "You can pick up to 2. Tap one to remove it first.",
+      err: "We couldn't send your answers. Check your connection and try again.",
+      lo: "1 · Not at all", hi: "5 · Very well", dk: "I don't know",
+      ph: "Type one skill in a sentence",
+      chars: n => `${n}/300`,
+      doneLabel: "Response recorded",
+      doneTitle: "Thank you.",
+      doneText: "Your answers are in.",
+      shareLine: "Share the link in your parents' group to complete the picture.",
+      wa: "Share on WhatsApp", copy: "Copy link", copied: "✓ Link copied",
+      waMsg: "I just took this 3-minute anonymous study on how Cairo families choose schools. Worth adding your voice:\n",
+      outTitle: "Thank you for your time.",
+      outText: "This study focuses on families in international-curriculum schools, so we'll stop here.",
+      outBack: "Back to start",
+      resume: n => `Continue where you left off · question ${n}`
+    },
+    ar: {
+      back: "رجوع", next: "التالي", send: "أرسل إجاباتي", skipSend: "تخطَّ وأرسل", sending: "جارٍ الإرسال…", retry: "حاول مرة أخرى",
+      switchTo: "English",
+      selExact: (n, m) => `اخترت ${n} من ${m}`,
+      pickUpTo: m => `اختر حتى ${m === 2 ? "اثنين" : m}`,
+      selUpTo: (n, m) => `اخترت ${n} من ${m} كحد أقصى`,
+      pickAny: "اختر كل ما ينطبق",
+      selAny: n => `اخترت ${n}`,
+      full3: "اخترت 3 بالفعل. ألغِ أحدها أولاً.",
+      screenWarn: "اخترت المنهج المصري — اضغط «التالي» للتأكيد.",
+      full2: "يمكنك اختيار اثنين فقط. ألغِ أحدهما أولاً.",
+      err: "تعذّر إرسال إجاباتك. تحقّق من اتصالك وحاول مرة أخرى.",
+      lo: "1 · إطلاقاً", hi: "5 · بشكل ممتاز", dk: "لا أعرف",
+      ph: "اكتب مهارة واحدة في جملة",
+      chars: n => `${n}/300`,
+      doneLabel: "تم تسجيل إجابتك",
+      doneTitle: "شكراً لك.",
+      doneText: "وصلت إجاباتك.",
+      shareLine: "شارك الرابط في جروب أولياء الأمور لتكتمل الصورة.",
+      wa: "شارك عبر واتساب", copy: "انسخ الرابط", copied: "✓ تم نسخ الرابط",
+      waMsg: "شاركت في دراسة سريعة (3 دقايق ومن غير أسماء) عن إزاي بنختار مدارس ولادنا في القاهرة.. رأيكم هيفرق جداً لو كملتوها:\n",
+      outTitle: "شكراً لوقتك.",
+      outText: "تركّز هذه الدراسة على أسر المدارس ذات المناهج الدولية، لذلك نتوقف هنا.",
+      outBack: "العودة للبداية",
+      resume: n => `أكمل من حيث توقفت · السؤال ${n}`
+    }
+  };
+
+  const CHECK = '<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  const $ = s => document.querySelector(s);
+  const pad = n => String(n).padStart(2, "0");
+  const S = { lang: "en", idx: 0, a: {}, order: null, started: 0, rid: null };
+  let advanceTimer = 0, warnTimer = 0, busy = false;
+
+  /* ---------- sky ---------- */
+  const sky = (() => {
+    const cv = $("#sky");
+    const ctx = cv && cv.getContext ? cv.getContext("2d") : null;
+    if (!ctx) return { you(){}, clear(){} };
+    const css = getComputedStyle(document.documentElement);
+    const hex = (v, d) => { const h = (v || d).trim().replace("#", ""); return [parseInt(h.slice(0,2),16), parseInt(h.slice(2,4),16), parseInt(h.slice(4,6),16)]; };
+    const SUN = hex(css.getPropertyValue("--sun"), "#FFB547");
+    const SKY = hex(css.getPropertyValue("--sky"), "#9CCFFF");
+    const INK = hex(css.getPropertyValue("--text"), "#F4F1EA");
+    const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const ARCS = [[-0.04,1.04,0.52,0.78,1.04,0.06],[0.08,1.08,0.66,0.92,1.08,0.30],[-0.10,0.92,0.36,0.58,0.92,-0.06]];
+    const bez = (a, u) => { const m = 1 - u; return [m*m*a[0] + 2*m*u*a[2] + u*u*a[4], m*m*a[1] + 2*m*u*a[3] + u*u*a[5]]; };
+    let W = 0, H = 0, dots = [], you = false, raf = 0;
+    const rgba = (c, a) => `rgba(${c[0]},${c[1]},${c[2]},${a.toFixed(3)})`;
+
+    function build(){
+      const dpr = Math.min(2, window.devicePixelRatio || 1);
+      W = window.innerWidth; H = window.innerHeight;
+      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      let seed = 26;
+      const rnd = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
+      const n = W < 640 ? 110 : 190;
+      dots = [];
+      for (let i = 0; i < n; i++) {
+        const a = ARCS[i % 3], u = rnd(), p = bez(a, u);
+        const spread = (W < 640 ? 24 : 46) * (0.4 + u);
+        const pick = rnd();
+        dots.push({ x: p[0]*W + (rnd() - .5)*spread*2, y: p[1]*H + (rnd() - .5)*spread,
+          r: rnd() < .07 ? 2.1 : .6 + rnd()*1.1, ph: rnd()*6.283, sp: .5 + rnd()*1.4,
+          c: pick < .16 ? SUN : (pick < .58 ? SKY : INK), base: .22 + rnd()*.5 });
+      }
+      for (let i = 0; i < n * .5; i++) {
+        dots.push({ x: rnd()*W, y: rnd()*H, r: .4 + rnd()*.6, ph: rnd()*6.283, sp: .3 + rnd(), c: INK, base: .07 + rnd()*.16 });
+      }
+    }
+
+    function draw(now){
+      const t = now / 1000;
+      ctx.clearRect(0, 0, W, H);
+      for (const d of dots) {
+        const a = reduce ? d.base : d.base * (0.62 + 0.38 * Math.sin(t * d.sp + d.ph));
+        ctx.fillStyle = rgba(d.c, a);
+        ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, 6.283); ctx.fill();
+      }
+      if (!reduce) {
+        const period = 9, u = (t % period) / period, steps = 30;
+        for (let k = steps; k >= 0; k--) {
+          const uu = u - k * 0.0055;
+          if (uu < 0) continue;
+          const p = bez(ARCS[0], uu), f = 1 - k / steps;
+          ctx.fillStyle = rgba(SUN, f * f * 0.9);
+          ctx.beginPath(); ctx.arc(p[0]*W, p[1]*H, 0.6 + 2.3*f, 0, 6.283); ctx.fill();
+        }
+      }
+      if (you) {
+        const p = bez(ARCS[0], 0.84), x = p[0]*W, y = p[1]*H;
+        const pulse = reduce ? 0.45 : (t * 0.7) % 1;
+        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = rgba(SUN, (1 - pulse) * 0.75);
+        ctx.beginPath(); ctx.arc(x, y, 7 + pulse * 28, 0, 6.283); ctx.stroke();
+        ctx.fillStyle = rgba(SUN, 1);
+        ctx.beginPath(); ctx.arc(x, y, 5, 0, 6.283); ctx.fill();
+      }
+    }
+
+    function loop(now){ draw(now); raf = requestAnimationFrame(loop); }
+    function start(){ cancelAnimationFrame(raf); if (reduce) draw(0); else raf = requestAnimationFrame(loop); }
+
+    build(); start();
+    let rt = 0;
+    window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { build(); if (reduce) draw(0); }, 120); });
+    document.addEventListener("visibilitychange", () => { if (document.hidden) cancelAnimationFrame(raf); else start(); });
+    return { you(){ you = true; if (reduce) draw(0); }, clear(){ you = false; if (reduce) draw(0); } };
+  })();
+
+  /* ---------- helpers ---------- */
+  function shuffled(arr){
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+    return a;
+  }
+  function setDir(lang){
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+  }
+  function show(id){
+    ["cover", "quiz", "done", "out"].forEach(s => { $("#" + s).hidden = s !== id; });
+    document.body.classList.toggle("is-quiz", id === "quiz");
+    window.scrollTo(0, 0);
+  }
+  function saveDraft(){ store.set(K_DRAFT, { lang: S.lang, idx: S.idx, a: S.a, order: S.order, started: S.started }); }
+  function valid(q){
+    const v = S.a[q.id];
+    if (q.type === "text") return true;
+    if (q.type === "multi") { const n = (v || []).length; return q.exact ? n === q.exact : n >= 1; }
+    return v != null;
+  }
+
+  /* ---------- cover ---------- */
+  function showCover(){
+    setDir("en");
+    sky.clear();
+    const d = store.get(K_DRAFT);
+    const row = $("#resumeRow");
+    if (d && d.a && Object.keys(d.a).length && typeof d.idx === "number" && d.idx < QS.length) {
+      const lang = d.lang === "ar" ? "ar" : "en";
+      const btn = $("#resumeBtn");
+      btn.textContent = UI[lang].resume(d.idx + 1);
+      btn.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
+      btn.onclick = () => {
+        S.lang = lang; S.idx = d.idx; S.a = d.a; S.order = d.order || shuffled(FACTORS.map(f => f[0])); S.started = d.started || Date.now();
+        openQuiz();
+      };
+      row.hidden = false;
+    } else {
+      row.hidden = true;
+    }
+    show("cover");
+  }
+  document.querySelectorAll("[data-start]").forEach(b => b.addEventListener("click", () => {
+    S.lang = b.dataset.start; S.idx = 0; S.a = {}; S.order = shuffled(FACTORS.map(f => f[0])); S.started = Date.now(); S.rid = null;
+    saveDraft();
+    openQuiz();
+  }));
+
+  /* ---------- quiz ---------- */
+  function openQuiz(){ show("quiz"); render(); }
+
+  function optList(q){
+    if (!q.shuffle) return q.opts;
+    const byCode = Object.fromEntries(q.opts);
+    return S.order.filter(c => byCode[c]).map(c => [c, byCode[c]]);
+  }
+
+  function render(){
+    clearTimeout(advanceTimer);
+    const q = QS[S.idx], t = UI[S.lang];
+    setDir(S.lang);
+    $("#count").innerHTML = `<b>${pad(S.idx + 1)}</b> / ${pad(QS.length)}`;
+    $("#fill").style.width = ((S.idx + 1) / QS.length * 100) + "%";
+    $("#back .lbl").textContent = t.back;
+    $("#langSwitch").textContent = t.switchTo;
+    $("#langSwitch").setAttribute("lang", S.lang === "ar" ? "en" : "ar");
+    $("#sec").textContent = SECTIONS[q.sec][S.lang];
+    $("#qt").textContent = q.t[S.lang];
+    const hint = $("#qh");
+    const showHint = !!q.hint && (!q.hintIf || q.hintIf(S.a));
+    hint.hidden = !showHint;
+    hint.textContent = showHint ? q.hint[S.lang] : "";
+
+    const box = $("#opts");
+    box.innerHTML = "";
+    box.removeAttribute("role");
+    box.className = "";
+
+    if (q.type === "single" || q.type === "multi") {
+      box.className = "opts " + q.type + (q.opts.length >= 10 ? " compact-list" : "");
+      box.setAttribute("role", q.type === "single" ? "radiogroup" : "group");
+      box.setAttribute("aria-labelledby", "qt");
+      optList(q).forEach(([code, label]) => {
+        const b = document.createElement("button");
+        b.type = "button"; b.className = "opt"; b.dataset.code = code;
+        if (q.type === "single") b.setAttribute("role", "radio");
+        b.innerHTML = `<span class="mark">${CHECK}</span><span class="label"></span>`;
+        b.querySelector(".label").textContent = label[S.lang];
+        b.addEventListener("click", () => choose(q, code));
+        box.appendChild(b);
+      });
+    } else if (q.type === "scale") {
+      const grid = document.createElement("div");
+      grid.className = "scale"; grid.setAttribute("role", "radiogroup"); grid.setAttribute("aria-labelledby", "qt");
+      for (let i = 1; i <= 5; i++) {
+        const b = document.createElement("button");
+        b.type = "button"; b.className = "sbtn"; b.dataset.code = String(i); b.textContent = String(i);
+        b.setAttribute("role", "radio");
+        b.addEventListener("click", () => choose(q, String(i)));
+        grid.appendChild(b);
+      }
+      const ends = document.createElement("div");
+      ends.className = "scale-ends";
+      ends.innerHTML = "<span></span><span></span>";
+      ends.children[0].textContent = t.lo; ends.children[1].textContent = t.hi;
+      const dk = document.createElement("button");
+      dk.type = "button"; dk.className = "btn2 dk"; dk.dataset.code = "dont_know"; dk.textContent = t.dk;
+      dk.setAttribute("role", "radio");
+      dk.addEventListener("click", () => choose(q, "dont_know"));
+      box.append(grid, ends, dk);
+      box.style.display = "grid";
+    } else if (q.type === "text") {
+      const ta = document.createElement("textarea");
+      ta.className = "txt"; ta.id = "q12-input"; ta.maxLength = 300; ta.rows = 4;
+      ta.placeholder = t.ph; ta.setAttribute("aria-labelledby", "qt");
+      ta.value = S.a[q.id] || "";
+      ta.addEventListener("input", () => { S.a[q.id] = ta.value.slice(0, 300); saveDraft(); updateStatus(); });
+      box.appendChild(ta);
+    }
+    if (q.type !== "scale") box.style.display = "";
+
+    paintMarks(q);
+    updateStatus();
+
+    const inner = $("#qinner");
+    inner.classList.remove("enter"); void inner.offsetWidth; inner.classList.add("enter");
+    window.scrollTo(0, 0);
+    try { $("#qt").focus({ preventScroll: true }); } catch (e) {}
+  }
+
+  function paintMarks(q){
+    const v = S.a[q.id];
+    const sel = Array.isArray(v) ? v : (v != null ? [v] : []);
+    document.querySelectorAll("#opts [data-code]").forEach(el => {
+      const on = sel.includes(el.dataset.code);
+      el.classList.toggle("on", on);
+      if (el.getAttribute("role") === "radio") el.setAttribute("aria-checked", on ? "true" : "false");
+      else el.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+  }
+
+  function setStatus(text, kind){
+    const s = $("#status");
+    s.textContent = text || "";
+    s.className = "status" + (kind ? " " + kind : "");
+  }
+
+  function updateStatus(){
+    const q = QS[S.idx], t = UI[S.lang], v = S.a[q.id];
+    clearTimeout(warnTimer);
+    let msg = "";
+    if (q.type === "multi") {
+      const n = (v || []).length;
+      if (q.exact) msg = t.selExact(n, q.exact);
+      else if (q.max) msg = n ? t.selUpTo(n, q.max) : t.pickUpTo(q.max);
+      else msg = n ? t.selAny(n) : t.pickAny;
+    } else if (q.type === "text") {
+      msg = t.chars((v || "").length);
+    }
+    if (q.screen && v === q.screen) { setStatus(t.screenWarn, "warn"); }
+    else setStatus(msg);
+    const nb = $("#next");
+    const last = S.idx === QS.length - 1;
+    nb.querySelector(".lbl").textContent = last ? ((v || "").trim() ? t.send : t.skipSend) : t.next;
+    nb.disabled = !valid(q) || busy;
+  }
+
+  function warn(text){
+    setStatus(text, "warn");
+    const s = $("#status");
+    s.classList.remove("nudge"); void s.offsetWidth; s.classList.add("nudge");
+    clearTimeout(warnTimer);
+    warnTimer = setTimeout(updateStatus, 2400);
+  }
+
+  function choose(q, code){
+    const t = UI[S.lang];
+    if (q.type === "multi") {
+      let arr = (S.a[q.id] || []).slice();
+      if (arr.includes(code)) {
+        arr = arr.filter(c => c !== code);
+      } else if (q.exclusive && q.exclusive.includes(code)) {
+        arr = [code];
+      } else {
+        arr = arr.filter(c => !(q.exclusive || []).includes(c));
+        const cap = q.exact || q.max || 0;
+        if (cap && arr.length >= cap) { warn(cap === 3 ? t.full3 : t.full2); return; }
+        arr.push(code);
+      }
+      S.a[q.id] = arr;
+      saveDraft(); paintMarks(q); updateStatus();
+      return;
+    }
+    S.a[q.id] = code;
+    saveDraft(); paintMarks(q); updateStatus();
+    clearTimeout(advanceTimer);
+    // Confirm with Next: the screen-out answer (avoids accidental taps) and the 1–5 scale (deliberate rating)
+    if (q.type === "scale" || (q.screen && code === q.screen)) return;
+    const at = S.idx;
+    advanceTimer = setTimeout(() => {
+      if (S.idx !== at || $("#quiz").hidden) return;
+      next();
+    }, 300);
+  }
+
+  function next(){
+    const q = QS[S.idx];
+    if (!valid(q) || busy) return;
+    if (q.screen && S.a[q.id] === q.screen) { screenOut(); return; }
+    if (S.idx < QS.length - 1) { S.idx++; saveDraft(); render(); }
+    else submit();
+  }
+
+  function back(){
+    clearTimeout(advanceTimer);
+    if (busy) return;
+    if (S.idx === 0) { showCover(); return; }
+    S.idx--; saveDraft(); render();
+  }
+
+  $("#next").addEventListener("click", next);
+  $("#back").addEventListener("click", back);
+  $("#langSwitch").addEventListener("click", () => { S.lang = S.lang === "ar" ? "en" : "ar"; saveDraft(); render(); });
+  document.addEventListener("keydown", e => {
+    if (e.key !== "Enter" || $("#quiz").hidden) return;
+    const tag = (e.target && e.target.tagName) || "";
+    if (tag === "TEXTAREA" || tag === "BUTTON" || tag === "A") return;
+    next();
+  });
+
+  /* ---------- screen-out ---------- */
+  function screenOut(){
+    const t = UI[S.lang];
+    setDir(S.lang);
+    $("#outTitle").textContent = t.outTitle;
+    $("#outText").textContent = t.outText;
+    $("#outBack").textContent = t.outBack;
+    store.del(K_DRAFT);
+    show("out");
+  }
+  $("#outBack").addEventListener("click", () => { S.a = {}; S.idx = 0; showCover(); });
+
+  /* ---------- submit ---------- */
+  async function send(fields){
+    if (!ENDPOINT) throw new Error("no endpoint");
+    const body = JSON.stringify(fields);
+    try {
+      const r = await fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body });
+      const j = await r.json();
+      if (!j || !j.ok) throw new Error((j && j.error) || "rejected");
+    } catch (e) {
+      if (e && e.name === "TypeError") {
+        // The answer may have landed with an unreadable reply: send again blind. The sheet ignores a repeated response_id.
+        await fetch(ENDPOINT, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain;charset=utf-8" }, body });
+        return;
+      }
+      throw e;
+    }
+  }
+
+  async function submit(){
+    if (busy) return;
+    busy = true;
+    const t = UI[S.lang], nb = $("#next");
+    nb.disabled = true;
+    nb.querySelector(".lbl").textContent = t.sending;
+    setStatus("");
+    if (!S.rid) S.rid = newId();
+    const fields = {
+      response_id: S.rid, device_id: DEVICE_ID, "bot-field": "",
+      lang: S.lang, src: SRC,
+      duration_sec: String(Math.max(0, Math.round((Date.now() - S.started) / 1000)))
+    };
+    QS.forEach(q => {
+      const v = S.a[q.id];
+      fields[q.id] = Array.isArray(v) ? v.join("|") : (v == null ? "" : String(v).trim());
+    });
+    try {
+      if (PREVIEW) {
+        await new Promise(r => setTimeout(r, 650));
+      } else {
+        await send(fields);
+        store.set(K_DONE, { at: Date.now(), lang: S.lang });
+      }
+      store.del(K_DRAFT);
+      busy = false;
+      showDone();
+    } catch (e) {
+      busy = false;
+      nb.disabled = false;
+      nb.querySelector(".lbl").textContent = t.retry;
+      setStatus(t.err, "err");
+    }
+  }
+
+  /* ---------- thank you ---------- */
+  function shareURL(){
+    // Always the clean public address, wherever the page is opened
+    return CANONICAL + "?src=share";
+  }
+
+
+  function showDone(){
+    const t = UI[S.lang];
+    setDir(S.lang);
+    $("#doneLabel").textContent = t.doneLabel;
+    $("#doneTitle").textContent = t.doneTitle;
+    $("#doneText").textContent = t.doneText;
+    $("#shareLine").textContent = t.shareLine;
+    $("#wa .lbl").textContent = t.wa;
+    $("#copy .lbl").textContent = t.copy;
+    $("#copyField").hidden = true;
+    $("#wa").href = "https://wa.me/?text=" + encodeURIComponent(t.waMsg + shareURL());
+    sky.you();
+    show("done");
+  }
+
+  $("#copy").addEventListener("click", () => {
+    const t = UI[S.lang], url = shareURL(), lbl = $("#copy .lbl");
+    const ok = () => { lbl.textContent = t.copied; setTimeout(() => { lbl.textContent = t.copy; }, 2200); };
+    const fallback = () => {
+      const f = $("#copyField"); f.value = url; f.hidden = false; f.focus(); f.select();
+      let copied = false;
+      try { copied = document.execCommand("copy"); } catch (e) {}
+      if (copied) { ok(); f.hidden = true; }
+    };
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(ok, fallback);
+      else fallback();
+    } catch (e) { fallback(); }
+  });
+
+  /* ---------- boot ---------- */
+  try {
+    const langs = (navigator.languages || [navigator.language || ""]).map(l => String(l).toLowerCase());
+    if (langs[0] && langs[0].startsWith("ar")) document.body.classList.add("ar-first");
+  } catch (e) {}
+
+  const done = store.get(K_DONE);
+  if (done && !PREVIEW) { S.lang = done.lang === "ar" ? "ar" : "en"; showDone(); }
+  else showCover();
+})();
+</script>
+</body>
+</html>
